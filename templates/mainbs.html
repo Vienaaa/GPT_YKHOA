@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* Định dạng chung */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #b3e6ff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        /* Container đầu trang với các biểu tượng và nhãn */
+        .header-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            width: 800px;
+            background-color: #ffffff;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .header-item:hover {
+            background-color: #00bfff;
+        }
+
+        .header-item img {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 5px;
+        }
+
+        .header-item span {
+            font-size: 14px;
+            color: black;
+            text-align: center;
+        }
+
+        /* Search bar styling */
+        .search-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: white;
+            border-radius: 10px;
+            padding: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
+            width: 800px;
+        }
+
+        .display-box {
+            background-color: #ffffff;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 150px;
+            margin-right: 10px;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background-color: white;
+            border-radius: 10px;
+            padding: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            flex-grow: 1;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .search-bar img {
+            width: 25px;
+            margin-left: 5px;
+            cursor: pointer;
+        }
+
+        /* Định dạng phần nội dung */
+        .content-section {
+            display: none;
+            width: 800px;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 15px;
+            font-size: 16px;
+            color: black;
+        }
+
+        /* Table styling */
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .table th, .table td {
+            padding: 10px;
+            text-align: center;
+            vertical-align: middle;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .table tr.selected {
+            background-color: #80d4ff;
+            color: black;
+        }
+
+        .table tr:hover {
+            background-color: #e0f7ff;
+            cursor: pointer;
+        }
+
+        /* Button Container styling */
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+
+        .button-container button {
+            width: 20%;
+            padding: 10px;
+            background-color: #80d4ff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .button-container button:hover {
+            background-color: #66ccff;
+        }
+
+                #chatbotFrame {
+            width: 100%;
+            height: 65vh; /* Đặt chiều cao phù hợp với khung nội dung */
+            min-height: 400px; /* Đặt chiều cao tối thiểu để tránh quá nhỏ */
+            border: none; /* Loại bỏ viền */
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Header với các biểu tượng và nhãn có thể nhấp -->
+    <div class="header-container">
+        <div id="user-section" class="header-item">
+            <img src="https://img.icons8.com/?size=100&id=9570&format=png&color=000000" alt="User Icon">
+            <span>Bác sĩ</span>
+        </div>
+        <div id="input-info-section" class="header-item">
+            <img src="https://img.icons8.com/?size=100&id=MNNoA9H61AWq&format=png&color=000000" alt="Hồ sơ bệnh án">
+            <span>Hồ sơ bệnh án</span>
+        </div>
+        <div id="update-info-section" class="header-item">
+            <img src="https://img.icons8.com/?size=100&id=epqW6vuvMX1c&format=png&color=000000" alt="Chuẩn đoán sơ bộ">
+            <span><a href="{{ url_for('chuandoansobo') }}">Chuẩn đoán sơ bộ</a></span>
+        </div>
+        
+        
+        
+        <div id="gpt-section" class="header-item">
+            <img src="https://img.icons8.com/?size=100&id=ka3InxFU3QZa&format=png&color=000000" alt="GPT">
+            <span>GPT</span>
+        </div>
+        <div id="medical-record-section" class="header-item">
+            <img src="https://img.icons8.com/?size=100&id=20401&format=png&color=000000" alt="Phương pháp điều trị">
+            <span>Phương pháp điều trị</span>
+        </div>
+    </div>
+
+    <div class="search-container">
+        <div class="display-box">BS01</div>
+        <div class="search-bar">
+            <input type="text" placeholder="Tìm kiếm...">
+            <img src="https://img.icons8.com/?size=100&id=12773&format=png&color=000000" alt="Search">
+        </div>
+    </div>
+
+    <!-- Nội dung Nhân Viên với bảng và nút -->
+    <div id="content-user" class="content-section">
+        <table class="table" border="1">
+            <thead>
+                <tr>
+                    <th>Mã Bệnh Nhân</th>
+                    <th>Tên Bệnh Nhân</th>
+                    <th>Tuổi</th>
+                    <th>Ngày Sinh</th>
+                    <th>Giới Tính</th>
+                    <th>Địa Chỉ</th>
+                    <th>SĐT</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for patient in patients %}
+                <tr>
+                    <td>{{ patient.MaBenhNhan }}</td>
+                    <td>{{ patient.TenBenhNhan }}</td>
+                    <td>{{ patient.TuoiBenhNhan }}</td>
+                    <td>{{ patient.NgaySinhBN }}</td>
+                    <td>{{ patient.GioiTinhBN }}</td>
+                    <td>{{ patient.DiaChiBN }}</td>
+                    <td>{{ patient.SDTBN }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="button-container">
+            <button>Quay lại</button>
+            <button>Mở</button>
+        </div>
+    </div>
+
+    <!-- Các phần nội dung khác -->
+    <div id="content-input-info" class="content-section">Đây là nội dung của Nhập thông tin.</div>
+    <div id="content-update-info" class="content-section">Đây là nội dung của Chuẩn đoán sơ bộ.</div>
+    <div id="content-medical-record" class="content-section">Đây là nội dung của Hồ sơ bệnh án.</div>
+
+    <!-- Nội dung của GPT (Chatbot) -->
+    <div id="content-gpt" class="content-section">
+        <iframe id="chatbotFrame" src="http://127.0.0.1:5000/GPT" frameborder="0" style="width:100%; height:400px;"></iframe>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            fetch('/patients')
+                .then(response => response.json())
+                .then(data => {
+                    const tableBody = document.querySelector(".table tbody");
+                    tableBody.innerHTML = ''; // Clear existing content
+                    data.forEach((patient) => {
+                        const row = document.createElement("tr");
+                        row.innerHTML = `
+                            <td>${patient.MaBenhNhan}</td>
+                            <td>${patient.TenBenhNhan}</td>
+                            <td>${patient.TuoiBenhNhan}</td>
+                            <td>${patient.NgaySinhBN}</td>
+                            <td>${patient.GioiTinhBN}</td>
+                            <td>${patient.DiaChiBN}</td>
+                            <td>${patient.SDTBN}</td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+                })
+                .catch(error => console.error("Error fetching data:", error));
+
+            // Chức năng hiển thị nội dung
+            function showContent(contentId) {
+                const contentSections = document.querySelectorAll(".content-section");
+                contentSections.forEach(section => section.style.display = "none");
+                document.getElementById(contentId).style.display = "block";
+            }
+
+            document.getElementById("user-section").addEventListener("click", function() {
+                showContent("content-user");
+            });
+
+            document.getElementById("input-info-section").addEventListener("click", function() {
+                showContent("content-input-info");
+            });
+
+            document.getElementById("update-info-section").addEventListener("click", function() {
+                showContent("content-update-info");
+            });
+
+            document.getElementById("gpt-section").addEventListener("click", function() {
+                showContent("content-gpt");
+            });
+
+            document.getElementById("medical-record-section").addEventListener("click", function() {
+                showContent("content-medical-record");
+            });
+        });
+    </script>
+</body>
+</html>

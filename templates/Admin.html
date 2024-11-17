@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    /* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body Styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #a5e0f9; /* Light blue background */
+}
+
+/* Sidebar Styling */
+.sidebar {
+    width: 80px;
+    height: 100vh;
+    background-color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+    position: fixed;
+}
+
+.sidebar img,
+.sidebar-icon {
+    width: 40px;
+    height: 40px;
+    margin: 20px 0;
+}
+
+.sidebar .admin-text {
+    color: #fff;
+    font-size: 14px;
+}
+
+/* Search Bar Styling */
+.search-bar {
+    margin-left: 100px;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.search-bar input {
+    width: 300px;
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+.search-bar button {
+    background: none;
+    border: none;
+    margin-left: -30px;
+    cursor: pointer;
+}
+
+/* Table Styling */
+.table-container {
+    margin: 80px auto;
+    width: 80%;
+    background-color: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 16px;
+    color: #333;
+}
+
+table th, table td {
+    padding: 12px 16px;
+    text-align: left;
+}
+
+table th {
+    background-color: #f4f4f4;
+}
+
+table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+table tr.selected {
+    background-color: #009fe3; /* Blue highlight for selected row */
+    color: #fff;
+}
+
+/* Button Styling */
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+button.add-btn {
+    background-color: #a5e0f9;
+    color: #333;
+}
+
+button.edit-btn {
+    background-color: #fff;
+    color: #333;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+button.delete-btn {
+    background-color: #fff;
+    color: #333;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+</style>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-icon">
+            <img src="user-icon.png" alt="User Icon"> <!-- Sidebar icon placeholder -->
+        </div>
+        <div class="admin-text">ADMIN</div>
+        <div class="sidebar-icon">
+            <img src="menu-icon.png" alt="Menu Icon"> <!-- Another sidebar icon -->
+        </div>
+        <!-- Add more sidebar icons as needed -->
+    </div>
+    
+    <div class="search-bar">
+        <input type="text" placeholder="Search...">
+        <button><img src="search-icon.png" alt="Search Icon"></button>
+    </div>
+    
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Mã bác sĩ</th>
+                    <th>Tên bác sĩ</th>
+                    <th>Chức Vụ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="selected">
+                    <td>1</td>
+                    <td>BS01</td>
+                    <td>Trần Hồ Thủy Viên</td>
+                    <td>Trưởng khoa</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>BS02</td>
+                    <td>Trịnh Trần Phương</td>
+                    <td>Phó khoa</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>BS03</td>
+                    <td>Huỳnh Văn Việt</td>
+                    <td>...</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>BS04</td>
+                    <td>Lương Thanh Triệu</td>
+                    <td>...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="button-container">
+        <button class="add-btn">Thêm</button>
+        <button class="edit-btn">Sửa</button>
+        <button class="delete-btn">Xóa</button>
+    </div>
+    
+</body>
+</html>

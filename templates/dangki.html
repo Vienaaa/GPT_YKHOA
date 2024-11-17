@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng Ký</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background-color: #a4ecff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            width: 400px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+        h2 {
+            color: #1d6a8c;
+            font-weight: bold;
+        }
+        form label {
+            display: block;
+            text-align: left;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #1d6a8c;
+        }
+        form input[type="text"],
+        form input[type="password"],
+        form input[type="email"],
+        form input[type="tel"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f7f9fb;
+            box-sizing: border-box;
+        }
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .checkbox-container input[type="checkbox"] {
+            margin-right: 5px;
+        }
+        button, .button {
+            width: calc(50% - 10px);
+            padding: 10px;
+            margin: 10px 5px;
+            border: none;
+            border-radius: 5px;
+            background-color: #2b5c88;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none; /* Cho thẻ <a> */
+            display: inline-block; /* Cho thẻ <a> */
+            text-align: center; /* Cho thẻ <a> */
+        }
+        button:hover, .button:hover {
+            background-color: #234a6d;
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+    </style>
+    <script>
+        function toggleSubmitButton() {
+            const checkbox = document.getElementById("agree");
+            const submitButton = document.getElementById("submitButton");
+            submitButton.disabled = !checkbox.checked;
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2>ĐĂNG KÝ</h2>
+        <form action="{{ url_for('register') }}" method="post">
+            <label for="username">Tên đăng nhập:</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">Mật khẩu:</label>
+            <input type="password" id="password" name="password" autocomplete="off" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="phone">Số điện thoại:</label>
+            <input type="tel" id="phone" name="phone" pattern="[0-9]{10,15}" required>
+            <label for="role">Chọn vai trò:</label>
+            <select name="role" required>
+                <option value="nhanvienyte">Nhân viên y tế</option>
+                <option value="bacsi">Bác sĩ</option>
+            </select>
+
+            <div class="checkbox-container">
+                <input type="checkbox" id="agree" name="agree" onclick="toggleSubmitButton()">
+                <label for="agree">Tôi đồng ý với các điều khoản.</label>
+            </div>
+
+            <button type="submit" id="submitButton" disabled>ĐĂNG KÝ</button>
+            <a href="{{ url_for('login') }}" class="button">ĐĂNG NHẬP</a>
+        </form>
+        
+    </div>
+</body>
+</html>

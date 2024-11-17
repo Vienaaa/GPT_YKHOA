@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng Nhập</title>
+    <style>
+        /* Cài đặt nền và căn giữa toàn bộ khung */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #1c4e80, #30cfd0); /* Nền chuyển màu xanh lam và xanh ngọc */
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Container chính của khung đăng nhập */
+        .login-container {
+            background-color: #ffffff; /* Nền trắng */
+            border-radius: 15px;
+            padding: 60px 60px;
+            width: 320px;
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3); /* Đổ bóng tinh tế */
+            text-align: center;
+            animation: fadeIn 0.6s ease-out; /* Hiệu ứng hiện dần */
+        }
+
+        /* Hiển thị thông báo flash */
+        .flash-message {
+            color: red;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        /* Hiệu ứng hiện dần */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        #chatbotFrame {
+        width: 100%;
+        height: 100%; /* Đặt chiều cao phù hợp với khung nội dung */
+        min-height: 400px; /* Đặt chiều cao tối thiểu để tránh quá nhỏ */
+        border: none; /* Loại bỏ viền */
+         }
+
+        /* Tiêu đề */
+        .login-container h2 {
+            color: #1c4e80;
+            font-size: 30px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        /* Nhãn cho các trường nhập */
+        .login-container label {
+            font-size: 14px;
+            color: #333;
+            display: block;
+            text-align: left;
+            margin-bottom: 8px;
+        }
+
+        /* Các trường nhập liệu */
+        .login-container input[type="text"],
+        .login-container input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            background-color: #f7f9fc;
+            box-shadow: inset 0px 2px 5px rgba(0, 0, 0, 0.1); /* Đổ bóng trong */
+            font-size: 15px;
+            color: #333;
+            transition: all 0.3s ease;
+        }
+
+        /* Hiệu ứng khi focus vào trường nhập */
+        .login-container input[type="text"]:focus,
+        .login-container input[type="password"]:focus {
+            outline: none;
+            border-color: #1c4e80;
+            box-shadow: 0px 4px 8px rgba(28, 78, 128, 0.2);
+        }
+
+        /* Nút đăng nhập */
+        .login-container button {
+            width: 100%;
+            padding: 13px;
+            background-color: #1c4e80;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            color: #ffffff;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Hiệu ứng khi hover vào nút đăng nhập */
+        .login-container button:hover {
+            background-color: #176093;
+        }
+
+        /* Liên kết đến trang đăng ký */
+        .register-link {
+            margin-top: 15px;
+            display: block;
+            font-size: 14px;
+            color: #1c4e80;
+            text-decoration: none;
+        }
+
+        .register-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>ĐĂNG NHẬP</h2>
+
+        <!-- Hiển thị thông báo flash nếu có -->
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash-message">
+                    {% for message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <form method="post" action="{{ url_for('login') }}">
+            <label for="username">Tên đăng nhập :</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">Mật khẩu :</label>
+            <input type="password" id="password" name="password" required>
+
+            <button type="submit">LOGIN</button>
+        </form>
+
+        <!-- Liên kết đến trang đăng ký nếu người dùng chưa có tài khoản -->
+        <a href="{{ url_for('register') }}" class="register-link">Chưa có tài khoản? Đăng ký</a>
+    </div>
+</body>
+</html>

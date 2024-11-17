@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot Simple</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f4f8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        #chat-container {
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 20px;
+            width: 700px; /* Đảm bảo khung rộng theo tỷ lệ */
+            max-width: 750px; /* Giới hạn chiều rộng */
+            background-color: #fff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        #messages {
+            height: 300px; /* Đặt chiều cao phù hợp */
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+        }
+        #user-input {
+            display: flex;
+        }
+        #user-input input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            transition: border 0.3s;
+        }
+        #user-input input:focus {
+            border-color: #28a745;
+            outline: none;
+            box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
+        }
+        #user-input button {
+            padding: 10px;
+            border: none;
+            background-color: #28a745;
+            color: #fff;
+            border-radius: 5px;
+            margin-left: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        #user-input button:hover {
+            background-color: #218838;
+            transform: scale(1.05);
+        }
+        #user-input button:active {
+            transform: scale(0.95);
+        }
+        .user-message {
+            color: blue;
+            background-color: #d1e7fd;
+            border-radius: 10px;
+            padding: 8px;
+            margin: 5px 0;
+            max-width: 70%;
+            align-self: flex-end; /* Căn tin nhắn người dùng bên phải */
+        }
+        .bot-message {
+            color: green;
+            background-color: #d4edda;
+            border-radius: 10px;
+            padding: 8px;
+            margin: 5px 0;
+            max-width: 70%;
+            align-self: flex-start; /* Căn tin nhắn bot bên trái */
+        }
+        .timestamp {
+            font-size: 0.8em;
+            color: #777;
+            margin-left: 5px;
+        }
+        .loading-message {
+            font-style: italic;
+            color: #999;
+            text-align: center;
+            margin: 10px 0;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+    </style>
+    
+    
+</head>
+<body>
+<div id="chat-container">
+    
+    <div id="messages"></div>
+    <div id="user-input">
+        <input type="text" id="message" placeholder="Nhập tin nhắn của bạn..." />
+        <button id="send">Gửi</button>
+    </div>
+    
+</div>
+
+<script>
+    // Hàm append tin nhắn vào phần chat, bao gồm cả tin nhắn chứa HTML của bot
+    
+    function appendMessage(message, isBot = false) {
+    const messagesDiv = document.getElementById('messages');
+    const messageElement = document.createElement('div');
+
+    if (isBot) {
+        // Kiểm tra xem phản hồi có chứa liên kết hay không
+        const urlRegex = /(https?:\/\/[^\s]+)/g;
+        const urls = message.match(urlRegex);
+        
+        if (urls) {
+            // Chỉ thêm một thẻ <a> cho mỗi liên kết
+            urls.forEach((url) => {
+                message = message.replace(url, `<a href="${url}" target="_blank">Click vào đây để tải về</a>`);
+            });
+        }
+
+        // Loại bỏ các phần mã Python không mong muốn
+        message = message.replace(/```python[\s\S]*?```/g, '');  // Đúng cú pháp Regex
+
+        messageElement.innerHTML = message;  // Cho phép HTML trong phản hồi bot
+        messageElement.classList.add('bot-message');
+    } else {
+        messageElement.textContent = message;
+        messageElement.classList.add('user-message');
+    }
+
+    messagesDiv.appendChild(messageElement);
+    messagesDiv.scrollTop = messagesDiv.scrollHeight; // Cuộn xuống tin nhắn mới
+    }
+
+
+
+
+
+
+
+
+    document.getElementById('send').addEventListener('click', async function() {
+        const messageInput = document.getElementById('message');
+        const userMessage = messageInput.value.trim();
+
+        if (userMessage !== "") {
+            appendMessage("Bạn: " + userMessage);
+            messageInput.value = "";  // Xóa input sau khi gửi
+            
+            // Gửi yêu cầu tới server để nhận phản hồi
+            const response = await getResponse(userMessage);
+            appendMessage("GPT: " + response, true);  // Thêm "GPT: " trước phản hồi từ bot
+                             // Hiển thị phản hồi từ bot, cho phép HTML
+        }
+    });
+
+    // Hàm gửi yêu cầu tới server Flask và nhận phản hồi
+    async function getResponse(userMessage) {
+        const response = await fetch('/chat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ message: userMessage })
+        });
+
+        if (!response.ok) {
+            return "Đã có lỗi xảy ra khi gọi chatbot.";
+        }
+
+        const data = await response.json();
+        return data.response;  // Trả về phản hồi từ server, có thể chứa liên kết HTML
+    }
+
+    // Gửi tin nhắn khi nhấn Enter
+    document.getElementById('message').addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+            document.getElementById('send').click();
+        }
+    });
+</script>
+
+</body>
+</html>

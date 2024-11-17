@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Bác Sĩ</title>
+    <link rel="stylesheet" href="style.css"> <!-- Đường dẫn tới file CSS -->
+    <style>
+        /* Reset và cấu hình chung */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #a0e7ff;
+            display: flex;
+            height: 100vh;
+        }
+
+        .container {
+            max-width: 800px; /* Độ rộng tối đa của khung */
+            margin: 20px auto; /* Căn giữa khung trong trang */
+            padding: 20px; /* Khoảng cách bên trong khung */
+            background-color: white; /* Màu nền của khung */
+            border: 1px solid #ccc; /* Đường viền khung */
+            border-radius: 8px; /* Bo góc khung */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Đổ bóng cho khung */
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 60px;
+            background-color: #444;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 20px;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+
+        .sidebar-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #333;
+            color: #fff;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 10px 0;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .sidebar-icon.selected {
+            background-color: #555;
+        }
+
+        /* Main content container */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            margin-left: 80px; /* Đẩy nội dung sang phải để tránh bị che bởi sidebar */
+        }
+
+        /* Phần Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 80px; /* Đẩy sang phải để không đè lên sidebar */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #a0e7ff;
+            width: calc(100% - 80px); /* Trừ đi chiều rộng của sidebar */
+            padding: 15px 20px;
+            z-index: 1; /* Đặt header ở trên các phần tử khác */
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .admin-profile {
+            display: flex;
+            align-items: center;
+            color: #333;
+        }
+
+        .profile-icon {
+            font-size: 36px;
+            margin-right: 10px;
+        }
+
+        .username {
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Thanh tìm kiếm */
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background-color: #fff;
+            border-radius: 20px;
+            padding: 5px 15px;
+            width: 300px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-bar input {
+            border: none;
+            outline: none;
+            width: 100%;
+            font-size: 16px;
+        }
+
+        .search-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 20px;
+            color: #333;
+        }
+
+        /* Form Thông Tin */
+        /* Form Thông Tin */
+        .form-container {
+            background-color: #fff;
+            padding: 25px;
+            border-radius: 15px;
+            width: 100%;
+            max-width: 500px;
+            margin: 100px auto; /* Căn giữa và đẩy xuống */
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+
+        .form-container label {
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .form-container input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #e0f7ff;
+            font-size: 16px;
+        }
+
+        /* Nút thao tác */
+        .button-container {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .button {
+            width: 30%;
+            padding: 10px;
+            font-weight: bold;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            border: none;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .button-add {
+            background-color: #d9f2d9;
+            color: #333;
+        }
+
+        .button-edit {
+            background-color: #f2e1d9;
+            color: #333;
+        }
+
+        .button-delete {
+            background-color: #f2d9d9;
+            color: #333;
+        }
+
+        .button:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-icon selected">⭐</div>
+        <div class="sidebar-icon">👤</div>
+        <div class="sidebar-icon">📝</div>
+        <div class="sidebar-icon">⚙️</div>
+    </div>
+
+    <!-- Header: Profile và Search Bar -->
+    <div class="header">
+        <div class="admin-profile">
+            <div class="profile-icon">👤</div>
+            <span class="username">ADMIN</span>
+        </div>
+        <div class="search-bar">
+            <input type="text" placeholder="Tìm kiếm...">
+            <button class="search-button">🔍</button>
+        </div>
+    </div>
+
+    <!-- Form Thông Tin Bác Sĩ -->
+    <div class="form-container">
+        <label for="doctor-id">Mã bác sĩ:</label>
+        <input type="text" id="doctor-id" placeholder="Nhập mã bác sĩ">
+
+        <label for="doctor-name">Tên bác sĩ:</label>
+        <input type="text" id="doctor-name" placeholder="Nhập tên bác sĩ">
+
+        <label for="specialization">Chuyên Khoa:</label>
+        <input type="text" id="specialization" placeholder="Nhập chuyên khoa">
+
+        <label for="phone-number">Số điện thoại:</label>
+        <input type="text" id="phone-number" placeholder="Nhập số điện thoại">
+
+        <!-- Buttons -->
+        <div class="button-container">
+            <button class="button button-add">Thêm</button>
+            <button class="button button-edit">Sửa</button>
+            <button class="button button-delete">Xóa</button>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chuẩn Đoán Sơ Bộ</title>
+</head>
+<body>
+    <h1>Nhập Thông Tin Chuẩn Đoán Sơ Bộ</h1>
+    <form action="{{ url_for('submit_ChanDoan') }}" method="POST">
+        <label for="ma_chuandoan">Mã Chuẩn Đoán:</label>
+        <input type="text" id="ma_chuandoan" name="ma_chuandoan" required><br>
+
+        <label for="ma_benhnhan">Mã Bệnh Nhân:</label>
+        <input type="text" id="ma_benhnhan" name="ma_benhnhan" required><br>
+
+        <label for="ngay_chuandoan">Ngày Chuẩn Đoán:</label>
+        <input type="date" id="ngay_chuandoan" name="ngay_chuandoan" required><br>
+
+        <label for="noidung_chuandoan">Nội Dung Chuẩn Đoán:</label><br>
+        <textarea id="noidung_chuandoan" name="noidung_chuandoan" rows="4" required></textarea><br>
+
+        <input type="submit" value="Gửi">
+    </form>
+</body>
+</html>
